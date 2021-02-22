@@ -28,6 +28,25 @@ public class Matrix {
 		return new Matrix(tmp);
 	}
 	
+	public Matrix scalarMult(int multiplier) {
+		Matrix copy = new Matrix(this.mat);
+		for(int r = 0; r < m; r++) {
+			for(int c = 0; c < n; c++) {
+				copy.mat[r][c] *= multiplier;
+			}
+		}
+		return copy;
+	}
+	
+	public Matrix transpose() {
+		int [][] tmp = new int[n][m];
+		for(int r = 0; r < m; r++) {
+			for(int c = 0; c < n; c++) {
+				tmp[c][r] = mat[r][c];
+			}
+		}
+		return new Matrix(tmp);
+	}
 	
 	@Override
 	public String toString() {
@@ -51,17 +70,19 @@ public class Matrix {
 			{1, 2, 3},
 			{1, 0, 0}
 		};
-		Matrix a = new Matrix(m);
+		Matrix A = new Matrix(m);
 		
 
-		Matrix b = new Matrix(new int[][] {
+		Matrix B = new Matrix(new int[][] {
 			{0, 0, 5},
 			{7, 5, 0},
 		});
 		
-		System.out.println(a);
-		System.out.println(b);
-		System.out.println(a.add(b));
+		System.out.println("A\n" + A);
+		System.out.println("B\n" + B);
+		System.out.println("A + B\n" + A.add(B));
+		System.out.println("A Tr\n" + A.transpose());
+		System.out.println("2 * A\n" + A.scalarMult(2));
 	}
 
 }
