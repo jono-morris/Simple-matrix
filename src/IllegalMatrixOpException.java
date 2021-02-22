@@ -1,10 +1,9 @@
 
-public class IllegalMatrixOpException extends Exception{
+public class IllegalMatrixOpException extends Exception {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	
-	public IllegalMatrixOpException(String message) {
-		super(message);
-	}
+    public IllegalMatrixOpException(String message) {
+        super(message);
+    }
 }
