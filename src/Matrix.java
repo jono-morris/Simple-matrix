@@ -9,6 +9,30 @@ public class Matrix {
     int m;
     int n;
 
+    public static Matrix identity(int n) {
+        int [][] tmp = new int[n][n];
+        for(int i = 0; i < n; i++) {
+            tmp[i][i] = 1;
+        }
+        return new Matrix(tmp);
+    }
+    
+    /**
+     * Create a permutation matrix from an array of translation elements.
+     * Note, the translation matrix uses 1 based indexing, i.e. the 
+     * first element starts at 1.
+     * 
+     * @param perm the translation for each element
+     * @return the create permutation matrix
+     */
+    public static Matrix permutation(int [][] perm) {
+        int [][] tmp = new int[perm.length][perm.length];        
+        for(int i = 0; i < perm.length; i++) {
+            tmp[perm[i][0] - 1][perm[i][1] - 1] = 1;
+        }
+        return new Matrix(tmp);
+    }
+    
     public Matrix(int[][] mat) {
         this.mat = mat;
         this.m = mat.length;
@@ -101,9 +125,14 @@ public class Matrix {
 //      ColumnVector C = new ColumnVector(new int[] {1, 2, 3});
 //      System.out.println("C \n" + C);
       
-      Matrix A = new Matrix(new int[][] { { 2, 3, 4 }, { 1, 0, 0 } });
-      Matrix B = new Matrix(new int[][] { { 0, 1000 }, { 1, 100 }, { 0, 10 } });
-      System.out.println("A * B \n" + A.mult(B));
+//      Matrix A = new Matrix(new int[][] { { 2, 3, 4 }, { 1, 0, 0 } });
+//      Matrix B = new Matrix(new int[][] { { 0, 1000 }, { 1, 100 }, { 0, 10 } });
+//      System.out.println("A * B \n" + A.mult(B));
+      
+        
+//        System.out.println(Matrix.identity(4));
+        Matrix perm = Matrix.permutation(new int[][]{{1, 1}, {2, 4}, {3, 2}, {4, 5}, {5, 3}});
+        System.out.println(perm);
   }
     
 }
