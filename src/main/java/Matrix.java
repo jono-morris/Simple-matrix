@@ -1,3 +1,4 @@
+
 import java.util.Arrays;
 
 /**
@@ -131,6 +132,26 @@ public class Matrix {
         }
         sb.append("]");
         return sb.toString();
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o instanceof Matrix) {
+            Matrix other = (Matrix) o;
+            if (this.m != other.m || this.n != other.n) {
+                return false;
+            }
+            for(int r = 0; r < m; r++) {
+                if (!Arrays.equals(this.mat[r], other.mat[r])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
     
     public static void main(String[] args) throws InvalidDimentionException {
