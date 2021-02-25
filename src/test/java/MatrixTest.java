@@ -11,7 +11,6 @@ public class MatrixTest {
         Matrix C = new Matrix(
                 new int[][] { { 1, 2, 3 }, { 1, 0, 0 } });
         
-        assert(!A.equals(null));
         assert(A.equals(A));
         assert(A.equals(B) && B.equals(A));
         assert(A.equals(C) && B.equals(C));
