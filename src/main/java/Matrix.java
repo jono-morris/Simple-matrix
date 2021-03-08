@@ -1,6 +1,9 @@
 
 import java.util.Arrays;
 
+import function.TriFunction;
+
+
 /**
  * Matrix implementation experiment.
  *
@@ -64,13 +67,17 @@ public class Matrix {
         return copy;
     }
 
-    public Matrix transpose() {
-        int[][] tmp = new int[n][m];
+    private void applyTriFunction(int [][] tmp, TriFunction tf) {
         for (int r = 0; r < m; r++) {
             for (int c = 0; c < n; c++) {
-                tmp[c][r] = mat[r][c];
+                tmp[c][r] = tf.apply(mat, r, c);
             }
         }
+    }
+    
+    public Matrix transpose() {
+        int[][] tmp = new int[n][m];        
+        applyTriFunction(tmp, (int[][] mat, int r, int c) -> {return mat[r][c];});
         return new Matrix(tmp);
     }
 
@@ -97,17 +104,16 @@ public class Matrix {
         return sum;
     }
 
-    
-    public RowVector getRow(int rowNum) {
-        return new RowVector(this.mat[rowNum - 1]);
-    }
-    
     public static Matrix copy(Matrix other) {
         int [][] tmp = new int[other.m][other.n];
         for(int i = 0; i < other.m; i++) {
             tmp[i] = Arrays.copyOf(other.mat[i], other.m + 1);
         }
         return new Matrix(tmp);
+    }
+
+    public RowVector getRow(int rowNum) {
+        return new RowVector(this.mat[rowNum - 1]);
     }
     
     public Matrix multiplyRow(final int val, int rowNum) {
