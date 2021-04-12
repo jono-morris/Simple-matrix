@@ -1,6 +1,8 @@
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 
+import exception.InvalidDimentionException;
+
 public class Driver {
 
     

@@ -1,3 +1,4 @@
+import exception.InvalidDimentionException;
 
 public class RowVector {
     

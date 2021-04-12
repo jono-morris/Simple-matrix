@@ -1,6 +1,7 @@
 
 import java.util.Arrays;
 
+import exception.InvalidDimentionException;
 import function.TriFunction;
 
 
@@ -18,30 +19,6 @@ public class Matrix {
         this.mat = mat;
         this.m = mat.length;
         this.n = mat[0].length;
-    }
-    
-    public static Matrix identity(int n) {
-        int [][] tmp = new int[n][n];
-        for(int i = 0; i < n; i++) {
-            tmp[i][i] = 1;
-        }
-        return new Matrix(tmp);
-    }
-    
-    /**
-     * Create a permutation matrix from an array of translation elements.
-     * Note, the translation matrix uses 1 based indexing, i.e. the 
-     * first element starts at 1.
-     * 
-     * @param perm the translation for each element
-     * @return the create permutation matrix
-     */
-    public static Matrix permutation(int [][] perm) {
-        int [][] tmp = new int[perm.length][perm.length];        
-        for(int i = 0; i < perm.length; i++) {
-            tmp[perm[i][0] - 1][perm[i][1] - 1] = 1;
-        }
-        return new Matrix(tmp);
     }
 
     public Matrix add(Matrix other) throws InvalidDimentionException {
@@ -162,19 +139,19 @@ public class Matrix {
     
     public static void main(String[] args) throws InvalidDimentionException {
 
-      Matrix A = new Matrix(new int[][] { { 1, 2, 3 }, { 1, 0, 0 } });
-      System.out.println("A\n" + A);
-
-      Matrix A_copy = Matrix.copy(A);
-      System.out.println("A copy\n" + A_copy);
-      
-          A = A.multiplyRow(2, 1);
-      
-          System.out.println("A\n" + A);
-          System.out.println("A copy\n" + A_copy);
-          
-          
-          System.out.println("A row 1\n" + A.getRow(1));
+//      Matrix A = new Matrix(new int[][] { { 1, 2, 3 }, { 1, 0, 0 } });
+//      System.out.println("A\n" + A);
+//
+//      Matrix A_copy = Matrix.copy(A);
+//      System.out.println("A copy\n" + A_copy);
+//      
+//          A = A.multiplyRow(2, 1);
+//      
+//          System.out.println("A\n" + A);
+//          System.out.println("A copy\n" + A_copy);
+//          
+//          
+//          System.out.println("A row 1\n" + A.getRow(1));
 
 //      Matrix B = new Matrix(new int[][] { { 0, 0, 5 }, { 7, 5, 0 } });
 
@@ -191,10 +168,6 @@ public class Matrix {
 //      Matrix B = new Matrix(new int[][] { { 0, 1000 }, { 1, 100 }, { 0, 10 } });
 //      System.out.println("A * B \n" + A.mult(B));
       
-        
-//        System.out.println(Matrix.identity(4));
-//        Matrix perm = Matrix.permutation(new int[][]{{1, 1}, {2, 4}, {3, 2}, {4, 5}, {5, 3}});
-//        System.out.println(perm);
   }
     
 }

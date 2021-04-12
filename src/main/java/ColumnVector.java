@@ -1,3 +1,5 @@
+import exception.InvalidDimentionException;
+
 public class ColumnVector {
 
     private Matrix matrix;
