@@ -143,38 +143,4 @@ public class Matrix {
         }
         return false;
     }
-    
-    public static void main(String[] args) throws InvalidDimentionException {
-
-//      Matrix A = new Matrix(new int[][] { { 1, 2, 3 }, { 1, 0, 0 } });
-//      System.out.println("A\n" + A);
-//
-//      Matrix A_copy = Matrix.copy(A);
-//      System.out.println("A copy\n" + A_copy);
-//      
-//          A = A.multiplyRow(2, 1);
-//      
-//          System.out.println("A\n" + A);
-//          System.out.println("A copy\n" + A_copy);
-//          
-//          
-//          System.out.println("A row 1\n" + A.getRow(1));
-
-//      Matrix B = new Matrix(new int[][] { { 0, 0, 5 }, { 7, 5, 0 } });
-
-
-//      System.out.println("B\n" + B);
-//      System.out.println("A + B\n" + A.add(B));
-//      System.out.println("A Tr\n" + A.transpose());
-//      System.out.println("2 * A\n" + A.scalarMult(2));
-      
-//      ColumnVector C = new ColumnVector(new int[] {1, 2, 3});
-//      System.out.println("C \n" + C);
-      
-//      Matrix A = new Matrix(new int[][] { { 2, 3, 4 }, { 1, 0, 0 } });
-//      Matrix B = new Matrix(new int[][] { { 0, 1000 }, { 1, 100 }, { 0, 10 } });
-//      System.out.println("A * B \n" + A.mult(B));
-      
-  }
-    
 }
