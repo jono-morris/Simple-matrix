@@ -20,7 +20,17 @@ public class Matrix {
         this.m = mat.length;
         this.n = mat[0].length;
     }
-
+    
+    public Matrix(Matrix other) {
+        int [][] tmp = new int[other.m][other.n];
+        for(int i = 0; i < other.m; i++) {
+            tmp[i] = Arrays.copyOf(other.mat[i], other.m + 1);
+        }
+        this.mat = tmp;
+        this.m = other.m;
+        this.n = other.n;
+    }
+    
     public boolean isOrthogonal() {
         if (m != n) {
             return false;
@@ -42,13 +52,13 @@ public class Matrix {
     }
 
     public Matrix scalarMult(int multiplier) {
-        Matrix copy = new Matrix(this.mat);
+        int[][] tmp = new int[m][n];
         for (int r = 0; r < m; r++) {
             for (int c = 0; c < n; c++) {
-                copy.mat[r][c] *= multiplier;
+                tmp[r][c] = this.mat[r][c] *= multiplier;
             }
         }
-        return copy;
+        return new Matrix(tmp);
     }
 
     private void applyTriFunction(int [][] tmp, TriFunction tf) {
@@ -86,14 +96,6 @@ public class Matrix {
             sum += a.mat[r][i] * b.mat[i][c];
         }
         return sum;
-    }
-
-    public static Matrix copy(Matrix other) {
-        int [][] tmp = new int[other.m][other.n];
-        for(int i = 0; i < other.m; i++) {
-            tmp[i] = Arrays.copyOf(other.mat[i], other.m + 1);
-        }
-        return new Matrix(tmp);
     }
 
     public RowVector getRow(int rowNum) {
