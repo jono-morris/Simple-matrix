@@ -21,6 +21,13 @@ public class Matrix {
         this.n = mat[0].length;
     }
 
+    public boolean isOrthogonal() {
+        if (m != n) {
+            return false;
+        }
+        return this.mult(this.transpose()).equals(MatrixUtils.identity(n));
+    }
+    
     public Matrix add(Matrix other) throws InvalidDimentionException {
         if (this.m != other.m || this.n != other.n) {
             throw new InvalidDimentionException("matrix dimensions must be equal");
@@ -61,7 +68,7 @@ public class Matrix {
     public Matrix mult(final Matrix other) throws InvalidDimentionException {
         if (this.m != other.n || this.n != other.m) {
             throw new InvalidDimentionException(
-                    String.format("" + "illegal dimension this, dim %s x %s, other dim must be %s x %s but was %s x %s)",
+                    String.format("illegal dimension this dim %s x %s, other dim must be %s x %s but was %s x %s)",
                             m, n, n, m, other.m, other.n));
         }
         int[][] tmp = new int[this.m][this.m];

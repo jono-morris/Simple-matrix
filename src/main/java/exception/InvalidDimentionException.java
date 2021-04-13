@@ -1,6 +1,6 @@
 package exception;
 
-public class InvalidDimentionException extends Exception {
+public class InvalidDimentionException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 

@@ -6,11 +6,30 @@ import org.junit.jupiter.api.Test;
 public class MatrixUtilsTest {
     
     /**
-     * Test creation of permutation matrix from permutation. 
-     * See https://en.wikipedia.org/wiki/Permutation_matrix
+     * Test creation of 3 by 3 identity matrix.
      */
     @Test
-    void Permutation() {
+    void identity() {
+        Matrix I = MatrixUtils.identity(3);
+        Matrix Iexp = new Matrix(new int[][] { {1,0,0}, {0,1,0}, {0,0,1} });
+        assert(I.equals(Iexp));
+    }
+    
+    @Test
+    void identityZero() {
+        IllegalArgumentException e = 
+                assertThrows(
+                        IllegalArgumentException.class,
+                        // identity matrix size zero
+                        () -> MatrixUtils.identity(0));
+        Assertions.assertEquals("invalid matrix size", e.getMessage());
+    }
+    
+    /**
+     * Test creation of permutation matrix from permutation. 
+     */
+    @Test
+    void permutation() {
         int[][] perm = new int[][]{{1, 1}, {2, 4}, {3, 2}, {4, 5}, {5, 3}};
         Matrix P = MatrixUtils.createPermutation(perm);
         Matrix Pexp = new Matrix(
@@ -20,16 +39,17 @@ public class MatrixUtilsTest {
     }
     
     @Test
-    void PermutationNull() {
+    void permutationNull() {
         IllegalArgumentException e = 
                 assertThrows(
                         IllegalArgumentException.class, 
+                        // null permutation vector
                         () -> MatrixUtils.createPermutation(null));
         Assertions.assertEquals("invalid permutation vector", e.getMessage());
     }
     
     @Test
-    void PermutationInvalid() {
+    void permutationInvalid() {
         IllegalArgumentException e = 
                 assertThrows(
                         IllegalArgumentException.class, 
