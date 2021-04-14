@@ -16,21 +16,35 @@ public class Matrix {
     private int n;
 
     public Matrix(int[][] mat) {
-        this.mat = mat;
+        if (mat == null || mat.length == 0) {
+            throw new IllegalArgumentException("invalid matrix data");
+        }
         this.m = mat.length;
         this.n = mat[0].length;
+        this.mat = copy(mat, m, n);
     }
     
     public Matrix(Matrix other) {
-        int [][] tmp = new int[other.m][other.n];
-        for(int i = 0; i < other.m; i++) {
-            tmp[i] = Arrays.copyOf(other.mat[i], other.m + 1);
+        if (mat == null) {
+            throw new IllegalArgumentException("invalid input matrix");
         }
-        this.mat = tmp;
         this.m = other.m;
         this.n = other.n;
+        this.mat = copy(other.mat, m, n);
     }
     
+    private int[][] copy(int[][] mat, int m, int n) {
+        int [][] tmp = new int[m][n];
+        for(int i = 0; i < m;  i++) {
+            tmp[i] = Arrays.copyOf(mat[i], m + 1);
+        }
+        return tmp;
+    }
+    
+    /**
+     * Whether or not the current matrix is Orthogonal
+     * @return
+     */
     public boolean isOrthogonal() {
         if (m != n) {
             return false;
