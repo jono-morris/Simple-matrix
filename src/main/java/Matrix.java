@@ -159,4 +159,13 @@ public class Matrix {
         }
         return false;
     }
+    
+    @Override
+    public int hashCode() {
+        int result = 31;
+        for(int r = 0; r < m; r++) {
+            result = result * 31 + Arrays.hashCode(this.mat[r]);
+        }
+        return result;
+    }
 }

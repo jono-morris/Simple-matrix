@@ -38,6 +38,18 @@ public class MatrixTest {
     }
     
     @Test
+    void matrixHashCode() {
+        Matrix A = new Matrix(
+                new int[][] { { 1, 2, 3 }, { 1, 0, 0 } });
+        Matrix B = new Matrix(
+                new int[][] { { 1, 2, 3 }, { 1, 0, 0 } });
+        Matrix C = new Matrix(
+                new int[][] { { 1, 0, 0 }, { 1, 2, 3 } });
+        assert A.hashCode() == B.hashCode();
+        assert A.hashCode() != C.hashCode();
+    }
+    
+    @Test
     void transpose() {
         Matrix A = new Matrix(
                 new int[][] { { 1, 2, 3 }, { 1, 0, 0 } });
