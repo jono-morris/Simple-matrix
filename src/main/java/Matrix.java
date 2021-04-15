@@ -11,34 +11,14 @@ import function.TriFunction;
  */
 public class Matrix {
 
-    private int[][] mat;
-    private int m;
-    private int n;
+    private DimensionState dim;
 
     public Matrix(int[][] mat) {
-        if (mat == null || mat.length == 0) {
-            throw new IllegalArgumentException("invalid matrix data");
-        }
-        this.m = mat.length;
-        this.n = mat[0].length;
-        this.mat = copy(mat, m, n);
+        dim = new DimensionState(mat);
     }
     
     public Matrix(Matrix other) {
-        if (mat == null) {
-            throw new IllegalArgumentException("invalid input matrix");
-        }
-        this.m = other.m;
-        this.n = other.n;
-        this.mat = copy(other.mat, m, n);
-    }
-    
-    private int[][] copy(int[][] mat, int m, int n) {
-        int [][] tmp = new int[m][n];
-        for(int i = 0; i < m;  i++) {
-            tmp[i] = Arrays.copyOf(mat[i], m + 1);
-        }
-        return tmp;
+        this.dim = DimensionState.from(other.dim);
     }
     
     /**
@@ -46,58 +26,58 @@ public class Matrix {
      * @return
      */
     public boolean isOrthogonal() {
-        if (m != n) {
+        if (dim.rows() != dim.cols()) {
             return false;
         }
-        return this.mult(this.transpose()).equals(MatrixUtils.identity(n));
+        return this.mult(this.transpose()).equals(MatrixUtils.identity(dim.cols()));
     }
     
     public Matrix add(Matrix other) throws InvalidDimentionException {
-        if (this.m != other.m || this.n != other.n) {
+        if (this.dim.rows() != other.dim.rows() || this.dim.cols() != other.dim.cols()) {
             throw new InvalidDimentionException("matrix dimensions must be equal");
         }
-        int[][] tmp = new int[m][n];
-        for (int r = 0; r < m; r++) {
-            for (int c = 0; c < n; c++) {
-                tmp[r][c] = mat[r][c] + other.mat[r][c];
+        int[][] tmp = new int[dim.rows()][this.dim.cols()];
+        for (int r = 0; r < dim.rows(); r++) {
+            for (int c = 0; c < dim.cols(); c++) {
+                tmp[r][c] = dim.dat()[r][c] + other.dim.dat()[r][c];
             }
         }
         return new Matrix(tmp);
     }
 
     public Matrix scalarMult(int multiplier) {
-        int[][] tmp = new int[m][n];
-        for (int r = 0; r < m; r++) {
-            for (int c = 0; c < n; c++) {
-                tmp[r][c] = this.mat[r][c] *= multiplier;
+        int[][] tmp = new int[dim.rows()][dim.cols()];
+        for (int r = 0; r < dim.rows(); r++) {
+            for (int c = 0; c < dim.cols(); c++) {
+                tmp[r][c] = this.dim.dat()[r][c] *= multiplier;
             }
         }
         return new Matrix(tmp);
     }
 
     private void applyTriFunction(int [][] tmp, TriFunction tf) {
-        for (int r = 0; r < m; r++) {
-            for (int c = 0; c < n; c++) {
-                tmp[c][r] = tf.apply(mat, r, c);
+        for (int r = 0; r < dim.rows(); r++) {
+            for (int c = 0; c < dim.cols(); c++) {
+                tmp[c][r] = tf.apply(dim.dat(), r, c);
             }
         }
     }
     
     public Matrix transpose() {
-        int[][] tmp = new int[n][m];        
+        int[][] tmp = new int[dim.cols()][dim.rows()];        
         applyTriFunction(tmp, (int[][] mat, int r, int c) -> {return mat[r][c];});
         return new Matrix(tmp);
     }
 
     public Matrix mult(final Matrix other) throws InvalidDimentionException {
-        if (this.m != other.n || this.n != other.m) {
+        if (this.dim.rows() != other.dim.cols() || this.dim.cols() != other.dim.rows()) {
             throw new InvalidDimentionException(
                     String.format("illegal dimension this dim %s x %s, other dim must be %s x %s but was %s x %s)",
-                            m, n, n, m, other.m, other.n));
+                            dim.rows(), dim.cols(), dim.cols(), dim.rows(), other.dim.rows(), other.dim.cols()));
         }
-        int[][] tmp = new int[this.m][this.m];
-        for (int r = 0; r < this.m; r++) {
-            for (int c = 0; c < this.m; c++) {
+        int[][] tmp = new int[this.dim.rows()][this.dim.rows()];
+        for (int r = 0; r < this.dim.rows(); r++) {
+            for (int c = 0; c < this.dim.rows(); c++) {
                 tmp[r][c] = sum(this, other, r, c);
             }
         }
@@ -106,38 +86,27 @@ public class Matrix {
 
     private int sum(Matrix a, Matrix b, int r, int c) {
         int sum = 0;
-        for (int i = 0; i < a.n; i++) {
-            sum += a.mat[r][i] * b.mat[i][c];
+        for (int i = 0; i < a.dim.cols(); i++) {
+            sum += a.dim.dat()[r][i] * b.dim.dat()[i][c];
         }
         return sum;
     }
 
     public RowVector getRow(int rowNum) {
-        return new RowVector(this.mat[rowNum - 1]);
+        return new RowVector(this.dim.dat()[rowNum - 1]);
     }
     
     public Matrix multiplyRow(final int val, int rowNum) {
-        Matrix tmp = new Matrix(this.mat);
-        for(int j = 0; j < tmp.n; j++) {
-            tmp.mat[rowNum - 1][j] = this.mat[rowNum - 1][j] * val;
+        Matrix tmp = new Matrix(this.dim.dat());
+        for(int j = 0; j < tmp.dim.cols(); j++) {
+            tmp.dim.dat()[rowNum - 1][j] = this.dim.dat()[rowNum - 1][j] * val;
         }
         return tmp;
     }
     
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[\n");
-        for (int i = 0; i < mat.length; i++) {
-            sb.append("  ");
-            for (int j = 0; j < mat[0].length; j++) {
-                sb.append(mat[i][j]);
-                sb.append("  ");
-            }
-            sb.append("\n");
-        }
-        sb.append("]");
-        return sb.toString();
+        return dim.toString();
     }
     
     @Override
@@ -147,11 +116,11 @@ public class Matrix {
         }
         if (o instanceof Matrix) {
             Matrix other = (Matrix) o;
-            if (this.m != other.m || this.n != other.n) {
+            if (this.dim.rows() != other.dim.rows() || this.dim.cols() != other.dim.cols()) {
                 return false;
             }
-            for(int r = 0; r < m; r++) {
-                if (!Arrays.equals(this.mat[r], other.mat[r])) {
+            for(int r = 0; r < dim.rows(); r++) {
+                if (!Arrays.equals(this.dim.dat()[r], other.dim.dat()[r])) {
                     return false;
                 }
             }
@@ -163,8 +132,8 @@ public class Matrix {
     @Override
     public int hashCode() {
         int result = 31;
-        for(int r = 0; r < m; r++) {
-            result = result * 31 + Arrays.hashCode(this.mat[r]);
+        for(int r = 0; r < dim.rows(); r++) {
+            result = result * 31 + Arrays.hashCode(this.dim.dat()[r]);
         }
         return result;
     }
