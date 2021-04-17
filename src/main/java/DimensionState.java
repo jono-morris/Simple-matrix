@@ -55,4 +55,33 @@ public class DimensionState {
         sb.append("]");
         return sb.toString();
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o instanceof DimensionState) {
+            DimensionState other = (DimensionState) o;
+            if (this.n != other.n || this.m != other.m) {
+                return false;
+            } 
+            for(int r = 0; r < m; r++) {
+                if (!Arrays.equals(this.dat[r], other.dat[r])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
+    public int hashCode() {
+        int result = 31;
+        for(int r = 0; r < m; r++) {
+            result = result * 31 + Arrays.hashCode(this.dat[r]);
+        }
+        return result;
+    }
 }

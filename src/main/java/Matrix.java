@@ -1,6 +1,4 @@
 
-import java.util.Arrays;
-
 import exception.InvalidDimentionException;
 import function.TriFunction;
 
@@ -116,25 +114,13 @@ public class Matrix {
         }
         if (o instanceof Matrix) {
             Matrix other = (Matrix) o;
-            if (this.dim.rows() != other.dim.rows() || this.dim.cols() != other.dim.cols()) {
-                return false;
-            }
-            for(int r = 0; r < dim.rows(); r++) {
-                if (!Arrays.equals(this.dim.dat()[r], other.dim.dat()[r])) {
-                    return false;
-                }
-            }
-            return true;
+            return this.dim.equals(other.dim);
         }
         return false;
     }
     
     @Override
     public int hashCode() {
-        int result = 31;
-        for(int r = 0; r < dim.rows(); r++) {
-            result = result * 31 + Arrays.hashCode(this.dim.dat()[r]);
-        }
-        return result;
+        return dim.hashCode();
     }
 }

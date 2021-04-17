@@ -1,24 +1,34 @@
-import exception.InvalidDimentionException;
-
 public class RowVector {
-    
-    private Matrix matrix;
-    
-    public RowVector(int [] row) {
+
+    private DimensionState dim;
+
+    public RowVector(int[] row) {
         int[][] tmp = new int[1][row.length];
-        for(int j = 0; j < row.length; j++) {
+        for (int j = 0; j < row.length; j++) {
             tmp[0][j] = row[j];
         }
-        this.matrix = new Matrix(tmp);
+        this.dim = new DimensionState(tmp);
     }
-    
+
+    @Override
     public String toString() {
-        return matrix.toString();
+        return dim.toString();
     }
-    
-    public static void main(String[] args) throws InvalidDimentionException {
-      RowVector R = new RowVector(new int[] {4, 5, 6});
-      System.out.println("R \n" + R);
-  }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o instanceof RowVector) {
+            RowVector other = (RowVector) o;
+            return this.dim.equals(other.dim);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return dim.hashCode();
+    }
 }
