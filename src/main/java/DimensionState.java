@@ -42,7 +42,7 @@ public class DimensionState {
         return dat;
     }
     
-    public void apply(TriFunction t) {
+    public void applyAllElements(TriFunction t) {
         for (int r = 0; r < m; r++) {
             for (int c = 0; c < n; c++) {
                 t.apply(dat, r, c);

@@ -116,4 +116,66 @@ public class MatrixTest {
                 new int[][] { {1,0,0,0,0}, {0,0,0,1,0}, {0,1,0,0,0}, {0,0,0,0,1}, {0,0,1,0,0} });
         assertTrue(P.isOrthogonal());       
     }
+    
+    @Test
+    void multiplyRow() {
+        Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        Matrix Exp = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {16, -8, 20} });
+        assert A.multiplyRow(2, 3).equals(Exp);
+    }
+    
+    @Test
+    void multiplyRowBelowMin() {
+        Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        IllegalArgumentException e = 
+                assertThrows(
+                        IllegalArgumentException.class, 
+                        () -> A.multiplyRow(2, 0));
+        Assertions.assertEquals(
+                "row number must be between '1' and '3', but was '0'", 
+                e.getMessage());
+    }
+    
+    @Test
+    void multiplyRowAboveMax() {
+        Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        IllegalArgumentException e = 
+                assertThrows(
+                        IllegalArgumentException.class, 
+                        () -> A.multiplyRow(2, 4));
+        Assertions.assertEquals(
+                "row number must be between '1' and '3', but was '4'", 
+                e.getMessage());
+    }
+    
+    @Test
+    void getRow() {
+        Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        RowVector Exp = new RowVector(new int[] {8, -4, 10});
+        assert A.getRow(3).equals(Exp);
+    }
+    
+    @Test
+    void getRowBelowMin() {
+        Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        IllegalArgumentException e = 
+                assertThrows(
+                        IllegalArgumentException.class, 
+                        () -> A.getRow(0));
+        Assertions.assertEquals(
+                "row number must be between '1' and '3', but was '0'", 
+                e.getMessage());
+    }
+    
+    @Test
+    void getRowAboveMax() {
+        Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        IllegalArgumentException e = 
+                assertThrows(
+                        IllegalArgumentException.class, 
+                        () -> A.getRow(4));
+        Assertions.assertEquals(
+                "row number must be between '1' and '3', but was '4'", 
+                e.getMessage());
+    }
 }

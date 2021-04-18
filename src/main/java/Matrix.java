@@ -1,6 +1,5 @@
 
 import exception.InvalidDimentionException;
-import function.TriFunction;
 
 
 /**
@@ -35,19 +34,19 @@ public class Matrix {
             throw new InvalidDimentionException("matrix dimensions must be equal");
         }
         int[][] tmp = new int[dim.rows()][this.dim.cols()];
-        dim.apply((int[][] ax, int r, int c) -> tmp[r][c] = ax[r][c] + other.dim.dat()[r][c]);
+        dim.applyAllElements((int[][] ax, int r, int c) -> tmp[r][c] = ax[r][c] + other.dim.dat()[r][c]);
         return new Matrix(tmp);
     }
 
     public Matrix scalarMult(int multiplier) {
         int[][] tmp = new int[dim.rows()][dim.cols()];
-        dim.apply((int[][] ax, int r, int c) -> tmp[r][c] = ax[r][c] *= multiplier);
+        dim.applyAllElements((int[][] ax, int r, int c) -> tmp[r][c] = ax[r][c] *= multiplier);
         return new Matrix(tmp);
     }
 
     public Matrix transpose() {
         int[][] tmp = new int[dim.cols()][dim.rows()];        
-        dim.apply((int[][] ax, int r, int c) -> tmp[c][r] = ax[r][c]);
+        dim.applyAllElements((int[][] ax, int r, int c) -> tmp[c][r] = ax[r][c]);
         return new Matrix(tmp);
     }
 
@@ -75,13 +74,25 @@ public class Matrix {
     }
 
     public RowVector getRow(int rowNum) {
+        if(rowNum < 1 || rowNum > this.dim.rows()) {
+            throw new IllegalArgumentException(
+                    String.format(
+                            "row number must be between '1' and '%s', but was '%s'", 
+                            this.dim.cols(), rowNum));
+        }
         return new RowVector(this.dim.dat()[rowNum - 1]);
     }
     
     public Matrix multiplyRow(final int val, int rowNum) {
+        if(rowNum < 1 || rowNum > this.dim.rows()) {
+            throw new IllegalArgumentException(
+                    String.format(
+                            "row number must be between '1' and '%s', but was '%s'", 
+                            this.dim.cols(), rowNum));
+        }
         Matrix tmp = new Matrix(this.dim.dat());
         for(int j = 0; j < tmp.dim.cols(); j++) {
-            tmp.dim.dat()[rowNum - 1][j] = this.dim.dat()[rowNum - 1][j] * val;
+            tmp.dim.dat()[rowNum - 1][j] *= val;
         }
         return tmp;
     }
