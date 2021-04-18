@@ -35,35 +35,19 @@ public class Matrix {
             throw new InvalidDimentionException("matrix dimensions must be equal");
         }
         int[][] tmp = new int[dim.rows()][this.dim.cols()];
-        for (int r = 0; r < dim.rows(); r++) {
-            for (int c = 0; c < dim.cols(); c++) {
-                tmp[r][c] = dim.dat()[r][c] + other.dim.dat()[r][c];
-            }
-        }
+        dim.apply((int[][] ax, int r, int c) -> tmp[r][c] = ax[r][c] + other.dim.dat()[r][c]);
         return new Matrix(tmp);
     }
 
     public Matrix scalarMult(int multiplier) {
         int[][] tmp = new int[dim.rows()][dim.cols()];
-        for (int r = 0; r < dim.rows(); r++) {
-            for (int c = 0; c < dim.cols(); c++) {
-                tmp[r][c] = this.dim.dat()[r][c] *= multiplier;
-            }
-        }
+        dim.apply((int[][] ax, int r, int c) -> tmp[r][c] = ax[r][c] *= multiplier);
         return new Matrix(tmp);
     }
 
-    private void applyTriFunction(int [][] tmp, TriFunction tf) {
-        for (int r = 0; r < dim.rows(); r++) {
-            for (int c = 0; c < dim.cols(); c++) {
-                tmp[c][r] = tf.apply(dim.dat(), r, c);
-            }
-        }
-    }
-    
     public Matrix transpose() {
         int[][] tmp = new int[dim.cols()][dim.rows()];        
-        applyTriFunction(tmp, (int[][] mat, int r, int c) -> {return mat[r][c];});
+        dim.apply((int[][] ax, int r, int c) -> tmp[c][r] = ax[r][c]);
         return new Matrix(tmp);
     }
 

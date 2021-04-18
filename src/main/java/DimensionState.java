@@ -1,5 +1,7 @@
 import java.util.Arrays;
 
+import function.TriFunction;
+
 public class DimensionState {
 
     private int[][] dat;
@@ -28,16 +30,24 @@ public class DimensionState {
         return tmp;
     }
     
-    protected int rows() {
+    /* package */ int rows() {
         return m;
     }
     
-    protected int cols() {
+    /* package */ int cols() {
         return n;
     }
     
-    protected int[][] dat() {
+    /* package */ int[][] dat() {
         return dat;
+    }
+    
+    public void apply(TriFunction t) {
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                t.apply(dat, r, c);
+            }
+        }
     }
     
     @Override
