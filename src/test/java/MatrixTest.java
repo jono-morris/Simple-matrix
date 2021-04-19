@@ -156,7 +156,7 @@ public class MatrixTest {
     }
     
     @Test
-    void getRowBelowMin() {
+    void getRowOutOfBounds() {
         Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
         IllegalArgumentException e = 
                 assertThrows(
@@ -165,17 +165,47 @@ public class MatrixTest {
         Assertions.assertEquals(
                 "row number must be between '1' and '3', but was '0'", 
                 e.getMessage());
-    }
-    
-    @Test
-    void getRowAboveMax() {
-        Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
-        IllegalArgumentException e = 
-                assertThrows(
+        
+        e = assertThrows(
                         IllegalArgumentException.class, 
                         () -> A.getRow(4));
         Assertions.assertEquals(
                 "row number must be between '1' and '3', but was '4'", 
+                e.getMessage());
+    }
+    
+    @Test
+    void swapRows() {
+        Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        Matrix Exp = new Matrix(new int[][] { {8, -4, 10}, {1, 0, 0}, {2, 3, 4} });
+        assert A.swapRows(1, 3).equals(Exp);
+    }
+    
+    @Test
+    void swapRowsOutOfBounds() {
+        Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        IllegalArgumentException e = 
+                assertThrows(
+                        IllegalArgumentException.class, 
+                        () -> A.swapRows(0, 3));
+        Assertions.assertEquals(
+                "provided rows to swap '0' and '3' must be in bounds", 
+                e.getMessage());
+        
+        e = assertThrows(
+                        IllegalArgumentException.class, 
+                        () -> A.swapRows(1, 4));
+    }
+    
+    @Test
+    void swapSameRow() {
+        Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        IllegalArgumentException e = 
+                assertThrows(
+                        IllegalArgumentException.class, 
+                        () -> A.swapRows(1, 1));
+        Assertions.assertEquals(
+                "rows to swap must be different rows, but both were '1'", 
                 e.getMessage());
     }
 }

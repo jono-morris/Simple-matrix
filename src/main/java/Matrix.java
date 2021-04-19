@@ -97,6 +97,22 @@ public class Matrix {
         return tmp;
     }
     
+    public Matrix swapRows(int r1, int r2) {
+        if (r1 == r2) {
+            throw new IllegalArgumentException(
+                    String.format("rows to swap must be different rows, but both were '%s'", r1));  
+        }
+        if (r1 < 1 || r2 < 1 || r1 > dim.rows() || r2 > dim.rows() ) {
+            throw new IllegalArgumentException(
+                    String.format("provided rows to swap '%s' and '%s' must be in bounds", r1, r2));  
+        }
+        int dat[][] = this.dim.dat();
+        int tmp[] = dat[r1 - 1];
+        dat[r1 - 1] = dat[r2 - 1];
+        dat[r2 - 1] = tmp;
+        return new Matrix(dat);
+    }
+    
     @Override
     public String toString() {
         return dim.toString();
