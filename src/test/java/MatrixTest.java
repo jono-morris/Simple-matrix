@@ -56,6 +56,10 @@ public class MatrixTest {
         Matrix ATr = new Matrix(
                 new int[][] { { 1, 1 }, { 2, 0 }, { 3, 0 } });
         assert A.transpose().equals(ATr);
+        
+        Matrix AExp = new Matrix(
+                new int[][] { { 1, 2, 3 }, { 1, 0, 0 } });
+        assert A.equals(AExp);
     }
     
     /** Test addition of two matrices */
@@ -65,6 +69,11 @@ public class MatrixTest {
         Matrix B = new Matrix(new int[][] { {0, 0, 5}, {7, 5, 0} });
         Matrix Exp = new Matrix(new int[][] { {1, 3, 6}, {8, 5, 0} });
         assert A.add(B).equals(Exp);
+        
+        Matrix AExp = new Matrix(new int[][] { {1, 3, 1}, {1, 0, 0} });
+        Matrix BExp = new Matrix(new int[][] { {0, 0, 5}, {7, 5, 0} });
+        assert A.equals(AExp);
+        assert B.equals(BExp);
     }
     
     /** Dimensions of added matrices must be the same */
@@ -84,6 +93,9 @@ public class MatrixTest {
         Matrix A = new Matrix(new int[][] { {1, 8, -3}, {4, -2, 5} });
         Matrix Exp = new Matrix(new int[][] { {2, 16, -6}, {8, -4, 10} });
         assert A.scalarMult(2).equals(Exp);
+        
+        Matrix AExp = new Matrix(new int[][] { {1, 8, -3}, {4, -2, 5} });
+        assert A.equals(AExp);
     }
     
     @Test
@@ -92,6 +104,11 @@ public class MatrixTest {
         Matrix B = new Matrix(new int[][] { {0, 1000}, {1, 100}, {0, 10} });
         Matrix Exp = new Matrix(new int[][] { {3, 2340}, {0, 1000} });
         assert A.mult(B).equals(Exp);
+        
+        Matrix AExp = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0} });
+        Matrix BExp = new Matrix(new int[][] { {0, 1000}, {1, 100}, {0, 10} });
+        assert A.equals(AExp);
+        assert B.equals(BExp);
     }
     
     @Test
@@ -122,6 +139,9 @@ public class MatrixTest {
         Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
         Matrix Exp = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {16, -8, 20} });
         assert A.multiplyRow(2, 3).equals(Exp);
+        
+        Matrix AExp = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        assert A.equals(AExp);
     }
     
     @Test
@@ -153,6 +173,9 @@ public class MatrixTest {
         Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
         RowVector Exp = new RowVector(new int[] {8, -4, 10});
         assert A.getRow(3).equals(Exp);
+        
+        Matrix AExp = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        assert A.equals(AExp);
     }
     
     @Test
@@ -172,6 +195,9 @@ public class MatrixTest {
         Assertions.assertEquals(
                 "row number must be between '1' and '3', but was '4'", 
                 e.getMessage());
+        
+        Matrix AExp = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        assert A.equals(AExp);
     }
     
     @Test
@@ -179,22 +205,28 @@ public class MatrixTest {
         Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
         Matrix Exp = new Matrix(new int[][] { {8, -4, 10}, {1, 0, 0}, {2, 3, 4} });
         assert A.swapRows(1, 3).equals(Exp);
+        
+        Matrix AExp = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        assert A.equals(AExp);
     }
     
     @Test
     void swapRowsOutOfBounds() {
         Matrix A = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
-        IllegalArgumentException e = 
+        ArrayIndexOutOfBoundsException e = 
                 assertThrows(
-                        IllegalArgumentException.class, 
+                        ArrayIndexOutOfBoundsException.class, 
                         () -> A.swapRows(0, 3));
         Assertions.assertEquals(
                 "provided rows to swap '0' and '3' must be in bounds", 
                 e.getMessage());
         
         e = assertThrows(
-                        IllegalArgumentException.class, 
+                ArrayIndexOutOfBoundsException.class, 
                         () -> A.swapRows(1, 4));
+        
+        Matrix AExp = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        assert A.equals(AExp);
     }
     
     @Test
@@ -207,5 +239,8 @@ public class MatrixTest {
         Assertions.assertEquals(
                 "rows to swap must be different rows, but both were '1'", 
                 e.getMessage());
+        
+        Matrix AExp = new Matrix(new int[][] { {2, 3, 4}, {1, 0, 0}, {8, -4, 10} });
+        assert A.equals(AExp);
     }
 }

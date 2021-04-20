@@ -40,7 +40,7 @@ public class Matrix {
 
     public Matrix scalarMult(int multiplier) {
         int[][] tmp = new int[dim.rows()][dim.cols()];
-        dim.applyAllElements((int[][] ax, int r, int c) -> tmp[r][c] = ax[r][c] *= multiplier);
+        dim.applyAllElements((int[][] ax, int r, int c) -> tmp[r][c] = ax[r][c] * multiplier);
         return new Matrix(tmp);
     }
 
@@ -103,10 +103,10 @@ public class Matrix {
                     String.format("rows to swap must be different rows, but both were '%s'", r1));  
         }
         if (r1 < 1 || r2 < 1 || r1 > dim.rows() || r2 > dim.rows() ) {
-            throw new IllegalArgumentException(
+            throw new ArrayIndexOutOfBoundsException(
                     String.format("provided rows to swap '%s' and '%s' must be in bounds", r1, r2));  
         }
-        int dat[][] = this.dim.dat();
+        int dat[][] = this.dim.dat().clone();
         int tmp[] = dat[r1 - 1];
         dat[r1 - 1] = dat[r2 - 1];
         dat[r2 - 1] = tmp;
